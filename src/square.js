@@ -1,7 +1,7 @@
 import './board.css';
 
 export default function Square(props) {
-  const { x, y, image, selected, turn, showMoveHint, onClick } = props;
+  const { x, y, image, selected, showMoveHint, onClick } = props;
 
   const lightSquare = "light-square";
   const darkSquare = "dark-square";
@@ -29,11 +29,12 @@ export default function Square(props) {
       onClick={() => onClick(x, y)}
     >
       <div className={`moveHintContainer ${moveHintClass}`}>
-        {image && 
-          <img className="piece" src={image} />
-        }
       </div>
 
+      {image && 
+        <img className="piece" src={image} draggable="false"/>
+      }
     </div>
+
   )
 }
