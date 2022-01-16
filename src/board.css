@@ -1,0 +1,60 @@
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  background-color: #222;
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  display: flex;
+}
+
+.square.dark-square {
+  background-color: #86A666;
+}
+
+.square.dark-square.selected {
+  background-color: #4D7E42;
+}
+
+.square.light-square {
+  background-color: #FFFFDD;
+}
+
+.square.light-square.selected {
+  background-color: #89AA7D;
+}
+
+.moveHint {
+  width: 14px;
+  height: 14px;
+  background-color: #676;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.board-row {
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  float: left;
+}
+
+#board {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  border: 4px solid #222;
+  border-radius: 2px;
+}
+
+.piece {
+  margin-top: 2px;
+  margin-left: -1px;
+}
