@@ -2,21 +2,21 @@ import { BLACK, WHITE, inBounds} from "./core";
 
 export function getValidPawnMoves(board, pawn, x, y) {
   const moves = [];
-
-  // Check if we can move two spaces on first move
   const direction = pawn.player;
-  const doubleMove = {x: x + direction + direction, y: y};
-  if ((pawn.player === BLACK && x == 1 || pawn.player === WHITE && x === 6) &&
-      inBounds(doubleMove.x, doubleMove.y) && 
-      !board[doubleMove.x][doubleMove.y].piece) {
-    moves.push(doubleMove);
-  }
 
   // Try to move one space forward
   const singleMove = {x: x + direction, y: y};
   if (inBounds(singleMove.x, singleMove.y) && 
       !board[singleMove.x][singleMove.y].piece) {
     moves.push(singleMove);
+  }
+
+  // Check if we can move two spaces on first move
+  const doubleMove = {x: x + direction + direction, y: y};
+  if (((pawn.player === BLACK && x === 1) || (pawn.player === WHITE && x === 6)) &&
+      !board[singleMove.x][singleMove.y].piece &&
+      !board[doubleMove.x][doubleMove.y].piece) {
+    moves.push(doubleMove);
   }
 
   // Try to capture to capture diagonally left

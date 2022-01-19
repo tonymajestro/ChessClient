@@ -11,5 +11,5 @@ export function range(start, end) {
 }
 
 export function copyBoard(board) {
-  return board.map(row => row.map(square => ({...square})));
+  return board.map(row => [...row]);
 } 
