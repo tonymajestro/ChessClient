@@ -1,8 +1,12 @@
 import { getValidBishopMoves } from "./bishop";
 import { getValidRookMoves } from "./rook";
 
-export function getValidQueenMoves(board, queen, x, y) {
+export function getValidQueenMoves(board, queen) {
   // Queens can move like rooks or bishops
-  return getValidBishopMoves(board, queen, x, y)
-    .concat(getValidRookMoves(board, queen, x, y));
+  const bishopMoves = getValidBishopMoves(board, queen);
+  const rookMoves = getValidRookMoves(board, queen);
+
+  const moves = bishopMoves.moves.concat(rookMoves.moves);
+  const captures = bishopMoves.captures.concat(rookMoves.captures);
+  return { moves, captures };
 }

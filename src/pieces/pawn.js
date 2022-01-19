@@ -1,8 +1,11 @@
 import { BLACK, WHITE, inBounds} from "./core";
 
-export function getValidPawnMoves(board, pawn, x, y) {
+export function getValidPawnMoves(board, pawn) {
   const moves = [];
-  const direction = pawn.player;
+  const captures = [];
+
+  const { x, y, player } = pawn;
+  const direction = player;
 
   // Try to move one space forward
   const singleMove = {x: x + direction, y: y};
@@ -25,6 +28,7 @@ export function getValidPawnMoves(board, pawn, x, y) {
       board[captureLeft.x][captureLeft.y].piece &&
       board[captureLeft.x][captureLeft.y].player !== pawn.player) {
     moves.push(captureLeft);
+    captures.push(captureLeft);
   }
 
   // Try to capture to capture diagonally left
@@ -33,7 +37,8 @@ export function getValidPawnMoves(board, pawn, x, y) {
       board[captureRight.x][captureRight.y].piece &&
       board[captureRight.x][captureRight.y].player !== pawn.player) {
     moves.push(captureRight);
+    captures.push(captureRight);
   }
 
-  return moves;
+  return { moves, captures };
 }

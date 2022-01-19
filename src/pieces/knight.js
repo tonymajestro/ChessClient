@@ -1,7 +1,8 @@
-import { inBounds, isEmptyOrCapturable } from "./core";
+import { inBounds, isCapturable, isEmptyOrCapturable } from "./core";
 
-export function getValidKnightMoves(board, knight, x, y) {
-  const direction = knight.player;
+export function getValidKnightMoves(board, knight) {
+  const { x, y, player } = knight;
+  const direction = player;
 
   const upLeftLong = {x: x + direction + direction, y: y - 1};
   const upLeftShort = {x: x + direction, y: y - 2};
@@ -12,13 +13,11 @@ export function getValidKnightMoves(board, knight, x, y) {
   const downRightLong = {x: x - direction - direction, y: y + 1};
   const downRightShort = {x: x - direction, y: y + 2};
 
-  return [upLeftLong,
-                 upLeftShort,
-                 upRightLong,
-                 upRightShort,
-                 downLeftLong,
-                 downLeftShort,
-                 downRightLong,
-                 downRightShort]
-    .filter(move => inBounds(move.x, move.y) && isEmptyOrCapturable(board, knight, move.x, move.y));
+  const allMoves = [upLeftLong, upLeftShort, upRightLong, upRightShort, 
+                    downLeftLong, downLeftShort, downRightLong, downRightShort];
+
+  const moves = allMoves.filter(move => inBounds(move.x, move.y) && isEmptyOrCapturable(board, knight, move.x, move.y));
+  const captures = allMoves.filter(move => inBounds(move.x, move.y) && isCapturable(board, knight, move.x, move.y));
+
+  return { moves, captures };
 }

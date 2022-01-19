@@ -38,12 +38,14 @@ export default function Board(props) {
         setMoveHints(getValidMoves(board, board[x][y], x, y));
       }
     } else if (board[selected.x][selected.y].piece) {
-      if (tryMovePiece(board, board[selected.x][selected.y], selected.x, selected.y, x, y)) {
+      if (tryMovePiece(board, board[selected.x][selected.y], x, y)) {
         // Piece has been selected, move it to new square
         const boardCopy = copyBoard(board);
-        boardCopy[x][y] = boardCopy[selected.x][selected.y];
+        const pieceCopy = {... boardCopy[selected.x][selected.y], x: x, y: y};
+        boardCopy[x][y] = pieceCopy
         boardCopy[selected.x][selected.y] = {};
         setBoard(boardCopy);
+
         setSelected({x: -1, y: -1});
         setMoveHints([]);
         setTurn(turn === WHITE ? BLACK : WHITE);
@@ -85,39 +87,39 @@ function initializeBoard() {
     }
   }
 
-  board[0][0] = { image : dark_rook, player: BLACK, piece: ROOK };
-  board[0][1] = { image : dark_knight, player: BLACK, piece: KNIGHT };
-  board[0][2] = { image : dark_bishop, player: BLACK, piece: BISHOP };
-  board[0][3] = { image : dark_queen, player: BLACK, piece: QUEEN };
-  board[0][4] = { image : dark_king, player: BLACK, piece: KING };
-  board[0][5] = { image : dark_bishop, player: BLACK, piece: BISHOP };
-  board[0][6] = { image : dark_knight, player: BLACK, piece: KNIGHT };
-  board[0][7] = { image : dark_rook, player: BLACK, piece: ROOK };
-  board[1][0] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][1] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][2] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][3] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][4] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][5] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][6] = { image : dark_pawn, player: BLACK, piece: PAWN };
-  board[1][7] = { image : dark_pawn, player: BLACK, piece: PAWN };
+  board[0][0] = { image : dark_rook, player: BLACK, piece: ROOK, x: 0, y: 0 };
+  board[0][1] = { image : dark_knight, player: BLACK, piece: KNIGHT, x: 0, y: 1 };
+  board[0][2] = { image : dark_bishop, player: BLACK, piece: BISHOP, x: 0, y: 2 };
+  board[0][3] = { image : dark_queen, player: BLACK, piece: QUEEN, x: 0, y: 3 };
+  board[0][4] = { image : dark_king, player: BLACK, piece: KING, x: 0, y: 4 };
+  board[0][5] = { image : dark_bishop, player: BLACK, piece: BISHOP, x: 0, y: 5 };
+  board[0][6] = { image : dark_knight, player: BLACK, piece: KNIGHT, x: 0, y: 6};
+  board[0][7] = { image : dark_rook, player: BLACK, piece: ROOK, x: 0, y: 7 };
+  board[1][0] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 0 };
+  board[1][1] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 1 };
+  board[1][2] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 2 };
+  board[1][3] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 3 };
+  board[1][4] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 4 };
+  board[1][5] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 5 };
+  board[1][6] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 6 };
+  board[1][7] = { image : dark_pawn, player: BLACK, piece: PAWN, x: 1, y: 7 };
   
-  board[6][0] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][1] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][2] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][3] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][4] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][5] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][6] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[6][7] = { image : light_pawn, player: WHITE, piece: PAWN };
-  board[7][0] = { image : light_rook, player: WHITE, piece: ROOK };
-  board[7][1] = { image : light_knight, player: WHITE, piece: KNIGHT };
-  board[7][2] = { image : light_bishop, player: WHITE, piece: BISHOP };
-  board[7][3] = { image : light_queen, player: WHITE, piece: QUEEN };
-  board[7][4] = { image : light_king, player: WHITE, piece: KING };
-  board[7][5] = { image : light_bishop, player: WHITE, piece: BISHOP };
-  board[7][6] = { image : light_knight, player: WHITE, piece: KNIGHT };
-  board[7][7] = { image : light_rook, player: WHITE, piece: ROOK };
+  board[6][0] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 0 };
+  board[6][1] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 1 };
+  board[6][2] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 2 };
+  board[6][3] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 3 };
+  board[6][4] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 4 };
+  board[6][5] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 5 };
+  board[6][6] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 6 };
+  board[6][7] = { image : light_pawn, player: WHITE, piece: PAWN, x: 6, y: 7 };
+  board[7][0] = { image : light_rook, player: WHITE, piece: ROOK, x: 7, y: 0 };
+  board[7][1] = { image : light_knight, player: WHITE, piece: KNIGHT, x: 7, y: 1 };
+  board[7][2] = { image : light_bishop, player: WHITE, piece: BISHOP, x: 7, y: 2 };
+  board[7][3] = { image : light_queen, player: WHITE, piece: QUEEN, x: 7, y: 3 };
+  board[7][4] = { image : light_king, player: WHITE, piece: KING, x: 7, y: 4 };
+  board[7][5] = { image : light_bishop, player: WHITE, piece: BISHOP, x: 7, y: 5 };
+  board[7][6] = { image : light_knight, player: WHITE, piece: KNIGHT, x: 7, y: 6 };
+  board[7][7] = { image : light_rook, player: WHITE, piece: ROOK, x: 7, y: 7 };
 
   return board;
 };
