@@ -1,52 +1,12 @@
 
-#root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 body {
   background-color: #222;
 }
 
-.square {
-  width: 60px;
-  height: 60px;
+#root {
   display: flex;
-  position: relative;
-  outline: none;
-  -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Old versions of Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; 
-}
-
-.square.dark-square {
-  background-color: #86A666;
-}
-
-.square.dark-square.selected {
-  background-color: #4D7E42;
-}
-
-.square.light-square {
-  background-color: #FFFFDD;
-}
-
-.square.light-square.selected {
-  background-color: #89AA7D;
-}
-
-.moveHint {
-  width: 20px;
-  height: 20px;
-  background-color: #676;
-  border-radius: 50%;
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
 .board-row {
@@ -62,10 +22,4 @@ body {
   flex-direction: column;
   border: 4px solid #222;
   border-radius: 2px;
-}
-
-.piece {
-  -webkit-user-drag: none;
-  margin-top: 2px;
-  margin-left: 0px;
 }

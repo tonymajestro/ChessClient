@@ -1,4 +1,4 @@
-import './board.css';
+import './square.css';
 
 export default function Square(props) {
   const { x, y, image, selected, showMoveHint, onClick } = props;

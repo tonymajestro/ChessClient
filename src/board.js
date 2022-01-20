@@ -41,7 +41,7 @@ export default function Board(props) {
       if (tryMovePiece(board, board[selected.x][selected.y], x, y)) {
         // Piece has been selected, move it to new square
         const boardCopy = copyBoard(board);
-        const pieceCopy = {... boardCopy[selected.x][selected.y], x: x, y: y};
+        const pieceCopy = { ...boardCopy[selected.x][selected.y], x: x, y: y };
         boardCopy[x][y] = pieceCopy
         boardCopy[selected.x][selected.y] = {};
         setBoard(boardCopy);

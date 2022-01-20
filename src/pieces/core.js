@@ -9,12 +9,12 @@ import { copyBoard } from "../utils";
 export const WHITE = -1;
 export const BLACK = 1;
 
-export const PAWN = 1;
-export const KNIGHT = 2;
-export const BISHOP = 3;
-export const ROOK = 4;
-export const QUEEN = 5;
-export const KING = 6;
+export const PAWN = 'pawn';
+export const KNIGHT = 'knight';
+export const BISHOP = 'bishop';
+export const ROOK = 'rook';
+export const QUEEN = 'queen';
+export const KING = 'king';
 
 export function inBounds(x, y) {
   return x >= 0 && x < 8 && y >= 0 && y < 8;
