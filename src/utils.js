@@ -13,3 +13,12 @@ export function range(start, end) {
 export function copyBoard(board) {
   return board.map(row => [...row]);
 } 
+
+export function updateBoard(board, piece, newX, newY) {
+    const boardCopy = copyBoard(board);
+    const pieceCopy = { ...piece, x: newX, y: newY };
+    boardCopy[newX][newY] = pieceCopy
+    boardCopy[piece.x][piece.y] = {};
+
+    return { boardCopy, pieceCopy };
+}

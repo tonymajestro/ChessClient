@@ -39,6 +39,14 @@
   bottom: 20px;
 }
 
+.square.light-square.checkHint {
+  background: radial-gradient(#ff2323, #FFFFDD);
+}
+
+.square.dark-square.checkHint {
+  background: radial-gradient(#ff2323, #86A666);
+}
+
 .piece {
   -webkit-user-drag: none;
   margin-top: 2px;

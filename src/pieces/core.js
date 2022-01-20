@@ -4,7 +4,7 @@ import { getValidPawnMoves } from "./pawn";
 import { getValidRookMoves } from "./rook";
 import { getValidQueenMoves } from "./queen";
 import { getValidKingMoves } from "./king";
-import { copyBoard } from "../utils";
+import { updateBoard } from "../utils";
 
 export const WHITE = -1;
 export const BLACK = 1;
@@ -60,7 +60,38 @@ export function getValidMoves(board, selection) {
     throw new Error("Unrecognized piece " + selection.piece);
   }
 
-  return choices.moves.filter(move => !isOwnKingInCheck(board, selection, move.x, move.y));
+  return choices.moves.filter(move => !isKingInCheckWithMove(board, selection, move.x, move.y));
+}
+
+export function getKing(board, player) {
+  return board
+      .flatMap(x => x)
+      .filter(square => square.piece && square.player === player && square.piece === KING)
+      [0];
+}
+
+export function isKingInCheck(board, selection) {
+  return isKingInCheckHelper(board, selection);
+}
+
+function isKingInCheckWithMove(board, selection, newX, newY) {
+  const { boardCopy, pieceCopy } = updateBoard(board, selection, newX, newY);
+  return isKingInCheckHelper(boardCopy, pieceCopy);
+}
+
+function isKingInCheckHelper(board, selection) {
+  const kingPosition = getKing(board, selection.player);
+
+  const enemy = selection.player === WHITE ? BLACK : WHITE;
+  const enemyPieces = board
+      .flatMap(x => x)
+      .filter(square => square.piece && square.player === enemy);
+
+  // King is in check if any of the enemy pieces can capture the king
+  return enemyPieces.some(enemyPiece => {
+    const captures = getCaptures(board, enemyPiece);
+    return captures.some(capture => capture.x === kingPosition.x && capture.y === kingPosition.y)
+  });
 }
 
 function getCaptures(board, selection) {
@@ -81,35 +112,4 @@ function getCaptures(board, selection) {
   }
 }
 
-function isOwnKingInCheck(board, selection, newX, newY) {
-  const getPlayerKing = (board, player) => {
-    return board
-      .flatMap(x => x)
-      .filter(square => square.piece && square.player === player && square.piece === KING)
-      [0];
-  };
-
-  const getEnemyPieces = (board, player) => {
-    const enemy = player === WHITE ? BLACK : WHITE;
-    return board
-      .flatMap(x => x)
-      .filter(square => square.piece && square.player === enemy);
-  };
-
-  const boardCopy = copyBoard(board);
-  const pieceCopy = { ... selection, x: newX, y: newY }
-  boardCopy[newX][newY] = pieceCopy;
-  boardCopy[selection.x][selection.y] = {};
-
-  const kingPosition = getPlayerKing(boardCopy, selection.player);
-  const enemyPieces = getEnemyPieces(boardCopy, selection.player);
-
-  // King is in check if any of the enemy pieces can capture the king
-  const s = enemyPieces.some(enemyPiece => {
-    const captures = getCaptures(boardCopy, enemyPiece);
-    return captures.some(capture => capture.x === kingPosition.x && capture.y === kingPosition.y)
-  });
-
-  return s;
-}
 

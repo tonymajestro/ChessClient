@@ -1,7 +1,7 @@
 import './square.css';
 
 export default function Square(props) {
-  const { x, y, image, selected, showMoveHint, onClick } = props;
+  const { x, y, image, selected, showMoveHint, showCheckHint, onClick } = props;
 
   const lightSquare = "light-square";
   const darkSquare = "dark-square";
@@ -19,21 +19,26 @@ export default function Square(props) {
   // Render these squares with a darker baclground
   const selectedClass = selected && image ? 'selected' : '';
 
-  // Whether or not to show a small circle on the square indicating
-  // that the selected piece can move to this square.
-  const moveHintClass = showMoveHint ? 'moveHint' : '';
+  // Whether or not to show a red circle to indicate that the king is in check
+  const checkClass = showCheckHint ? 'checkHint' : '';
 
   return (
     <div 
-      className={`square ${squareColor} ${selectedClass}`}
+      className={`square ${squareColor} ${selectedClass} ${checkClass}`}
       onClick={() => onClick(x, y)}
     >
-      <div className={`moveHintContainer ${moveHintClass}`}>
-      </div>
+      {showMoveHint && 
+        <div className="moveHint"></div>
+      }
+
+      {showCheckHint && 
+        <div className="checkHint"></div>
+      }
 
       {image && 
         <img className="piece" src={image} draggable="false"/>
       }
+
     </div>
 
   )
