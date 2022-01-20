@@ -1,6 +1,6 @@
 import Square from './square';
 import React, { useState } from 'react';
-import { range, copyBoard, updateBoard } from './utils';
+import { range, updateBoard } from './utils';
 
 import dark_pawn from './images/dark_pawn.png';
 import light_pawn from './images/light_pawn.png';
@@ -28,58 +28,63 @@ export default function Board(props) {
   const [checkData, setCheckData] = useState(initializeCheckData());
 
   const handleClick = (x, y) => {
-    if (selected.x === x && selected.y === y) {
-      // Undo selection if clicked on twice
-      setSelected({x: -1, y: -1});
-      setMoveHints([]);
-    } else if (selected.x === -1 && selected.y === -1) {
+    if (selected.x === -1 && selected.y === -1) {
       if (board[x][y].piece && board[x][y].player === turn) {
         // Newly selected piece, highlight the square
         setSelected({x: x, y: y});
         setMoveHints(getValidMoves(board, board[x][y], x, y));
       }
+
+    } else if (selected.x === x && selected.y === y) {
+      // Undo selection if clicked on twice
+      setSelected({x: -1, y: -1});
+      setMoveHints([]);
+
     } else if (board[selected.x][selected.y].piece) {
+      // Player is trying to move piece to a new square
+
       if (tryMovePiece(board, board[selected.x][selected.y], x, y)) {
-        // Piece has been selected, move it to new square
+        // New move is valid, move piece to new square
         const { boardCopy } = updateBoard(board, board[selected.x][selected.y], x, y);
         setBoard(boardCopy);
         setSelected({x: -1, y: -1});
         setMoveHints([]);
         setTurn(turn === WHITE ? BLACK : WHITE);
-        
-        const newCheckData = {};
-        const whiteKing = getKing(boardCopy, WHITE);
-        const blackKing = getKing(boardCopy, BLACK);
-        const whiteInCheck = isKingInCheck(boardCopy, whiteKing);
-        const blackInCheck = isKingInCheck(boardCopy, blackKing);
-
-        if (whiteInCheck) {
-          newCheckData.white = { 
-            isCheck : true,
-            x: whiteKing.x,
-            y: whiteKing.y
-          };
-        } else {
-          newCheckData.white = { isCheck : false };
-        }
-
-        if (blackInCheck) {
-          newCheckData.black = { 
-            isCheck : true,
-            x: blackKing.x,
-            y: blackKing.y
-          };
-        } else {
-          newCheckData.black = { isCheck : false };
-        }
-
-        setCheckData(newCheckData);
+        updateCheckData(boardCopy);
       } else {
-        // Piece cannot be moved here, undo the piece selection
+        // New move is not valid, undo piece selection
         setSelected({x: -1, y: -1});
         setMoveHints([]);
       }
     }
+  }
+
+  const updateCheckData = (boardCopy) => {
+    const whiteKing = getKing(boardCopy, WHITE);
+    const blackKing = getKing(boardCopy, BLACK);
+    const whiteInCheck = isKingInCheck(boardCopy, whiteKing);
+    const blackInCheck = isKingInCheck(boardCopy, blackKing);
+
+    const newCheckData = { 
+      white: { isCheck: false },
+      black: { isCheck: false }
+    };
+
+    if (whiteInCheck) {
+      newCheckData.white = { 
+        isCheck : true,
+        x: whiteKing.x,
+        y: whiteKing.y
+      };
+    } else if (blackInCheck) {
+      newCheckData.black = { 
+        isCheck : true,
+        x: blackKing.x,
+        y: blackKing.y
+      };
+    }
+
+    setCheckData(newCheckData);
   }
 
   return (
