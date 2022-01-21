@@ -31,10 +31,6 @@ export default function Square(props) {
         <div className="moveHint"></div>
       }
 
-      {showCheckHint && 
-        <div className="checkHint"></div>
-      }
-
       {image && 
         <img className="piece" src={image} draggable="false"/>
       }
