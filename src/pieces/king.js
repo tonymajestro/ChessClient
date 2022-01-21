@@ -1,6 +1,7 @@
 import { inBounds, isCapturable, isEmptyOrCapturable } from "./core";
+import { KING } from '../constants';
 
-export function getValidKingMoves(board, king) {
+export function getKingMoves(board, king) {
   const { x, y } = king;
 
   const upRight = {x: x + 1, y: y + 1};
@@ -21,4 +22,11 @@ export function getValidKingMoves(board, king) {
     move => inBounds(move.x, move.y) && isCapturable(board, king, move.x, move.y));
 
   return { moves, captures };
+}
+
+export function getKing(board, player) {
+  return board
+      .flatMap(x => x)
+      .filter(square => square.piece && square.player === player && square.piece === KING)
+      [0];
 }

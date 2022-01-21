@@ -1,6 +1,7 @@
-import { BLACK, WHITE, inBounds} from "./core";
+import { inBounds} from "./core";
+import { WHITE, BLACK } from "../constants";
 
-export function getValidPawnMoves(board, pawn) {
+export function getPawnMoves(board, pawn) {
   const moves = [];
   const captures = [];
 

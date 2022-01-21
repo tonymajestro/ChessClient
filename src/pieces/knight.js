@@ -1,6 +1,6 @@
 import { inBounds, isCapturable, isEmptyOrCapturable } from "./core";
 
-export function getValidKnightMoves(board, knight) {
+export function getKnightMoves(board, knight) {
   const { x, y, player } = knight;
   const direction = player;
 

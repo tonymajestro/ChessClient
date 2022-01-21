@@ -1,20 +1,12 @@
-import { getValidBishopMoves } from "./bishop";
-import { getValidKnightMoves } from "./knight";
-import { getValidPawnMoves } from "./pawn";
-import { getValidRookMoves } from "./rook";
-import { getValidQueenMoves } from "./queen";
-import { getValidKingMoves } from "./king";
+import { getBishopMoves } from "./bishop";
+import { getKnightMoves } from "./knight";
+import { getPawnMoves } from "./pawn";
+import { getRookMoves } from "./rook";
+import { getQueenMoves } from "./queen";
+import { getKing, getKingMoves } from "./king";
 import { updateBoard } from "../utils";
 
-export const WHITE = -1;
-export const BLACK = 1;
-
-export const PAWN = 'pawn';
-export const KNIGHT = 'knight';
-export const BISHOP = 'bishop';
-export const ROOK = 'rook';
-export const QUEEN = 'queen';
-export const KING = 'king';
+import { WHITE, BLACK, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } from "../constants";
 
 export function inBounds(x, y) {
   return x >= 0 && x < 8 && y >= 0 && y < 8;
@@ -42,32 +34,30 @@ export function tryMovePiece(board, selection, newX, newY) {
 }
 
 export function getValidMoves(board, selection) {
-  let choices = {};
-
-  if (selection.piece === PAWN) {
-    choices = getValidPawnMoves(board, selection);
-  } else if (selection.piece === KNIGHT) {
-    choices = getValidKnightMoves(board, selection);
-  } else if (selection.piece === BISHOP) {
-    choices = getValidBishopMoves(board, selection);
-  } else if (selection.piece === ROOK) {
-    choices = getValidRookMoves(board, selection);
-  } else if (selection.piece === QUEEN) {
-    choices = getValidQueenMoves(board, selection);
-  } else if (selection.piece === KING) {
-    choices = getValidKingMoves(board, selection);
-  } else {
-    throw new Error("Unrecognized piece " + selection.piece);
-  }
-
+  let choices = getMoves(board, selection);
   return choices.moves.filter(move => !isKingInCheckWithMove(board, selection, move.x, move.y));
 }
 
-export function getKing(board, player) {
-  return board
-      .flatMap(x => x)
-      .filter(square => square.piece && square.player === player && square.piece === KING)
-      [0];
+export function getMoves(board, selection) {
+  if (selection.piece === PAWN) {
+    return getPawnMoves(board, selection);
+  } else if (selection.piece === KNIGHT) {
+    return getKnightMoves(board, selection);
+  } else if (selection.piece === BISHOP) {
+    return getBishopMoves(board, selection);
+  } else if (selection.piece === ROOK) {
+    return getRookMoves(board, selection);
+  } else if (selection.piece === QUEEN) {
+    return getQueenMoves(board, selection);
+  } else if (selection.piece === KING) {
+    return getKingMoves(board, selection);
+  } else {
+    throw new Error("Unrecognized piece " + selection.piece);
+  }
+}
+
+function getCaptures(board, selection) {
+  return getMoves(board, selection).captures;
 }
 
 export function isKingInCheck(board, selection) {
@@ -93,23 +83,3 @@ function isKingInCheckHelper(board, selection) {
     return captures.some(capture => capture.x === kingPosition.x && capture.y === kingPosition.y)
   });
 }
-
-function getCaptures(board, selection) {
-  if (selection.piece === PAWN) {
-    return getValidPawnMoves(board, selection).captures;
-  } else if (selection.piece === KNIGHT) {
-    return getValidKnightMoves(board, selection).captures;
-  } else if (selection.piece === BISHOP) {
-    return getValidBishopMoves(board, selection).captures;
-  } else if (selection.piece === ROOK) {
-    return getValidRookMoves(board, selection).captures;
-  } else if (selection.piece === QUEEN) {
-    return getValidQueenMoves(board, selection).captures;
-  } else if (selection.piece === KING) {
-    return getValidKingMoves(board, selection).captures;
-  } else {
-    throw new Error("Unrecognized piece " + selection.piece);
-  }
-}
-
-

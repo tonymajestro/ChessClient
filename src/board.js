@@ -15,8 +15,10 @@ import light_queen from './images/light_queen.png';
 import dark_king from './images/dark_king.png';
 import light_king from './images/light_king.png';
 
-import { getValidMoves, tryMovePiece, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, getKing, isKingInCheck } from './pieces/core';
-import { WHITE, BLACK } from './pieces/core';
+import { getValidMoves, tryMovePiece, isKingInCheck } from './pieces/core';
+import { getKing } from './pieces/king';
+
+import { WHITE, BLACK, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING } from "./constants";
 
 import './board.css';
 
@@ -25,14 +27,15 @@ export default function Board(props) {
   const [turn, setTurn] = useState(WHITE);
   const [selected, setSelected] = useState({x: -1, y: -1});
   const [moveHints, setMoveHints] = useState([]);
+  const [moveHintCache, setMoveHintCache] = useState({});
   const [checkData, setCheckData] = useState(initializeCheckData());
 
   const handleClick = (x, y) => {
     if (selected.x === -1 && selected.y === -1) {
       if (board[x][y].piece && board[x][y].player === turn) {
-        // Newly selected piece, highlight the square
+        // Newly selected piece, highlight the square and show move hints
         setSelected({x: x, y: y});
-        setMoveHints(getValidMoves(board, board[x][y], x, y));
+        updateMoveHints(x, y);
       }
 
     } else if (selected.x === x && selected.y === y) {
@@ -49,6 +52,7 @@ export default function Board(props) {
         setBoard(boardCopy);
         setSelected({x: -1, y: -1});
         setMoveHints([]);
+        setMoveHintCache({});
         setTurn(turn === WHITE ? BLACK : WHITE);
         updateCheckData(boardCopy);
       } else {
@@ -85,6 +89,20 @@ export default function Board(props) {
     }
 
     setCheckData(newCheckData);
+  }
+
+  const updateMoveHints = (x, y) => {
+    const cachePos = y * 8 + x;
+
+    let moveHints = []
+    if (moveHintCache[cachePos]) {
+      moveHints = moveHintCache[cachePos];
+    } else {
+      moveHints = getValidMoves(board, board[x][y]);
+      moveHintCache[cachePos] = moveHints;
+    }
+
+    setMoveHints(moveHints);
   }
 
   return (

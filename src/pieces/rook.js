@@ -1,7 +1,7 @@
 
 import { inBounds, isCapturable, isEmpty } from "./core";
 
-export function getValidRookMoves(board, rook) {
+export function getRookMoves(board, rook) {
   const moves = [];
   const captures = [];
 

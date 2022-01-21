@@ -1,6 +1,6 @@
 import { inBounds, isCapturable, isEmpty } from "./core";
 
-export function getValidBishopMoves(board, bishop) {
+export function getBishopMoves(board, bishop) {
   const moves = [];
   const captures = [];
   const { x, y } = bishop;

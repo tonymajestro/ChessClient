@@ -1,10 +1,10 @@
-import { getValidBishopMoves } from "./bishop";
-import { getValidRookMoves } from "./rook";
+import { getBishopMoves } from "./bishop";
+import { getRookMoves } from "./rook";
 
-export function getValidQueenMoves(board, queen) {
+export function getQueenMoves(board, queen) {
   // Queens can move like rooks or bishops
-  const bishopMoves = getValidBishopMoves(board, queen);
-  const rookMoves = getValidRookMoves(board, queen);
+  const bishopMoves = getBishopMoves(board, queen);
+  const rookMoves = getRookMoves(board, queen);
 
   const moves = bishopMoves.moves.concat(rookMoves.moves);
   const captures = bishopMoves.captures.concat(rookMoves.captures);
